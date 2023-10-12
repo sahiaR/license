@@ -1,0 +1,109 @@
+<div>
+  <h2 id="page-heading" data-cy="LicenseAbonnementHeading">
+    <span jhiTranslate="mdgApp.licenseAbonnement.home.title">License Abonnements</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="mdgApp.licenseAbonnement.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-license-abonnement"
+        [routerLink]="['/license-abonnement/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="mdgApp.licenseAbonnement.home.createLabel"> Create a new License Abonnement </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="licenseAbonnements?.length === 0">
+    <span jhiTranslate="mdgApp.licenseAbonnement.home.notFound">No License Abonnements found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="licenseAbonnements && licenseAbonnements.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="startDate">
+            <div class="d-flex">
+              <span jhiTranslate="mdgApp.licenseAbonnement.startDate">Start Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="endDate">
+            <div class="d-flex">
+              <span jhiTranslate="mdgApp.licenseAbonnement.endDate">End Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="societe">
+            <div class="d-flex">
+              <span jhiTranslate="mdgApp.licenseAbonnement.societe">Societe</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="nombreDUtilisateur">
+            <div class="d-flex">
+              <span jhiTranslate="mdgApp.licenseAbonnement.nombreDUtilisateur">Nombre D Utilisateur</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let licenseAbonnement of licenseAbonnements; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/license-abonnement', licenseAbonnement.id, 'view']">{{ licenseAbonnement.id }}</a>
+          </td>
+          <td>{{ licenseAbonnement.startDate | formatMediumDate }}</td>
+          <td>{{ licenseAbonnement.endDate | formatMediumDate }}</td>
+          <td>{{ licenseAbonnement.societe }}</td>
+          <td>{{ licenseAbonnement.nombreDUtilisateur }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/license-abonnement', licenseAbonnement.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/license-abonnement', licenseAbonnement.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(licenseAbonnement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
