@@ -1,0 +1,6 @@
+entity LicenseAbonnement {
+    startDate LocalDate,
+    endDate LocalDate,
+    societe String,
+    nombreDUtilisateur Integer,
+}
