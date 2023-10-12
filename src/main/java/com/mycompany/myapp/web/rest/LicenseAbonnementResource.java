@@ -11,7 +11,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.codec.Hex;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -34,8 +39,11 @@ public class LicenseAbonnementResource {
 
     private final LicenseAbonnementRepository licenseAbonnementRepository;
 
-    public LicenseAbonnementResource(LicenseAbonnementRepository licenseAbonnementRepository) {
+    private final TextEncryptor textEncryptor;
+
+    public LicenseAbonnementResource(LicenseAbonnementRepository licenseAbonnementRepository, TextEncryptor textEncryptor) {
         this.licenseAbonnementRepository = licenseAbonnementRepository;
+        this.textEncryptor = textEncryptor;
     }
 
     /**
@@ -185,5 +193,47 @@ public class LicenseAbonnementResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/license-abonnements/{id}/generate-encrypted-text-file")
+    public ResponseEntity<byte[]> generateEncryptedTextFileForLicenseAbonnement(@PathVariable Long id) {
+        log.debug("REST request to generate an encrypted text file for LicenseAbonnement: {}", id);
+        Optional<LicenseAbonnement> licenseAbonnementOptional = licenseAbonnementRepository.findById(id);
+
+        if (licenseAbonnementOptional.isPresent()) {
+            LicenseAbonnement licenseAbonnement = licenseAbonnementOptional.get();
+            // Générer le contenu du fichier texte à partir de l'objet LicenseAbonnement
+            String textContent =
+                "License Abonnement Details:\n" +
+                "ID: " +
+                licenseAbonnement.getId() +
+                "\n" +
+                "Start Date: " +
+                licenseAbonnement.getStartDate() +
+                "\n" +
+                "End Date: " +
+                licenseAbonnement.getEndDate() +
+                "\n" +
+                "Societe: " +
+                licenseAbonnement.getSociete() +
+                "\n";
+            // Crypter le contenu du fichier texte
+
+            String hexTextContent = new String(Hex.encode(textContent.getBytes()));
+            String encryptedText = textEncryptor.encrypt(hexTextContent);
+
+            // Convertir le contenu crypté en tableau de bytes
+            byte[] encryptedBytes = encryptedText.getBytes();
+            // String decryptedText = passwordEncoder
+            // byte[] textBytes = textContent.getBytes();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.TEXT_PLAIN);
+            headers.setContentDispositionFormData("attachment", "license-abonnement-encrypted.txt");
+
+            return new ResponseEntity<>(encryptedBytes, headers, HttpStatus.OK);
+            //return new ResponseEntity<>(textBytes, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

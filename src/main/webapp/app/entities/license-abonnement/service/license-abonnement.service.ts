@@ -36,6 +36,14 @@ export class LicenseAbonnementService {
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
   ) {}
+  generateEncryptedTextFileForLicenseAbonnement(id: number): Observable<HttpResponse<Blob>> {
+    const url = `${this.resourceUrl}/${id}/generate-encrypted-text-file`;
+
+    return this.http.get(url, {
+      responseType: 'blob',
+      observe: 'response',
+    });
+  }
 
   create(licenseAbonnement: NewLicenseAbonnement): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(licenseAbonnement);

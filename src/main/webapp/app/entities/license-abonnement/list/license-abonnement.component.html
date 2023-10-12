@@ -95,6 +95,8 @@
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
+              <!-- file-generation.component.html -->
+              <button (click)="generateEncryptedTextFile(licenseAbonnement.id)">Générer un fichier texte</button>
 
               <button type="submit" (click)="delete(licenseAbonnement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>

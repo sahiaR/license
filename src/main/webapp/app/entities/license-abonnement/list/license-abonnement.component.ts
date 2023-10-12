@@ -48,6 +48,29 @@ export class LicenseAbonnementComponent implements OnInit {
   ngOnInit(): void {
     this.load();
   }
+  generateEncryptedTextFile(entityId: number) {
+    this.licenseAbonnementService.generateEncryptedTextFileForLicenseAbonnement(entityId).subscribe(
+      response => {
+        const headers = response.headers;
+        const contentType = headers.get('content-type');
+        // @ts-ignore
+        const blob = new Blob([response.body], { type: contentType });
+        // @ts-ignore
+        const filename = headers.get('content-disposition').split('filename=')[1];
+
+        // Créez un lien pour le téléchargement
+        const downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = filename;
+
+        // Cliquez sur le lien pour déclencher le téléchargement
+        downloadLink.click();
+      },
+      error => {
+        console.error('Erreur lors de la génération du fichier', error);
+      },
+    );
+  }
 
   delete(licenseAbonnement: ILicenseAbonnement): void {
     const modalRef = this.modalService.open(LicenseAbonnementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
