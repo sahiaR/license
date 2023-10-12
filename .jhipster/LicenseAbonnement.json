@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "entityTableName": "license_abonnement",
+  "fields": [
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "societe",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nombreDUtilisateur",
+      "fieldType": "Integer"
+    }
+  ],
+  "name": "LicenseAbonnement",
+  "relationships": []
+}
