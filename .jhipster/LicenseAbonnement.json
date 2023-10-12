@@ -1,5 +1,6 @@
 {
   "applications": "*",
+  "changelogDate": "20231012051218",
   "entityTableName": "license_abonnement",
   "fields": [
     {
@@ -20,5 +21,6 @@
     }
   ],
   "name": "LicenseAbonnement",
-  "relationships": []
+  "relationships": [],
+  "searchEngine": "no"
 }

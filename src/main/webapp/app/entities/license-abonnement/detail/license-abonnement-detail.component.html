@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="licenseAbonnement">
+      <h2 data-cy="licenseAbonnementDetailsHeading">
+        <span jhiTranslate="mdgApp.licenseAbonnement.detail.title">License Abonnement</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ licenseAbonnement.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="mdgApp.licenseAbonnement.startDate">Start Date</span></dt>
+        <dd>
+          <span>{{ licenseAbonnement.startDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="mdgApp.licenseAbonnement.endDate">End Date</span></dt>
+        <dd>
+          <span>{{ licenseAbonnement.endDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="mdgApp.licenseAbonnement.societe">Societe</span></dt>
+        <dd>
+          <span>{{ licenseAbonnement.societe }}</span>
+        </dd>
+        <dt><span jhiTranslate="mdgApp.licenseAbonnement.nombreDUtilisateur">Nombre D Utilisateur</span></dt>
+        <dd>
+          <span>{{ licenseAbonnement.nombreDUtilisateur }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/license-abonnement', licenseAbonnement.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>
